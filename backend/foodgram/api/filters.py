@@ -22,7 +22,6 @@ class CustomSearchFilter(filters.FilterSet):
                 queryset = queryset.filter(
                     shop_cart__user=self.request.user
                 )
-        print(self.request.user, queryset.all())
         return queryset
 
     def favorite(self, queryset, name, value):
