@@ -1,6 +1,26 @@
 version: '3.3'
 services:
 
+  db:
+    image: postgres:12.4
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ../backend/foodgram/foodgram/.env
+  web:
+    build: 
+      context: ../backend/foodgram
+      dockerfile: Dockerfile
+    restart: always
+    command: gunicorn foodgram.wsgi:application --bind 0.0.0.0:8000
+    ports:
+      - "8000:8000" 
+    depends_on:
+      - db
+    env_file:
+      - ../backend/foodgram/foodgram/.env
+    volumes:
+      - media:/media
   frontend:
     build:
       context: ../frontend
@@ -16,3 +36,6 @@ services:
       - ../frontend/build:/usr/share/nginx/html/
       - ../docs/redoc.html:/usr/share/nginx/html/api/docs/redoc.html
       - ../docs/openapi-schema.yml:/usr/share/nginx/html/api/docs/openapi-schema.yml
+volumes:
+  postgres_data:
+  media:
