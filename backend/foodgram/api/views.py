@@ -23,12 +23,6 @@ class ListRetrieveViewSet(
     pass
 
 
-class ListDestroyViewSet(
-    viewsets.GenericViewSet, ListModelMixin, DestroyModelMixin
-):
-    pass
-
-
 class IngredientViewSet(ListRetrieveViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
