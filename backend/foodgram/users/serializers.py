@@ -53,7 +53,6 @@ class UserReadSerializer(UserSerializer):
         ]
 
     def get_is_subscribed(self, obj):
-        print(self)
         if self.context['request'].user.is_authenticated:
             return Follow.objects.filter(
                 user=self.context['request'].user, author=obj
@@ -84,12 +83,9 @@ class SubscribeSerializer(UserSerializer):
         count = 5
         try:
             count = int(self.context['request'].query_params['recipes_limit'])
-            print(count)
         except Exception:
             pass
-        print(obj.recipes.all())
         qs = obj.recipes.all()[:count]
-        print(qs)
         serializer = ShopFavorSerializer(qs, many=True)
         return serializer.data
 
