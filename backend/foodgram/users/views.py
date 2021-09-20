@@ -1,7 +1,5 @@
 
 from api.models import Follow
-from django.db.models import Count, Exists, OuterRef, Value
-from django.db.models.fields import BooleanField
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
 from rest_framework.authtoken.models import Token
@@ -29,22 +27,7 @@ class ListRetrieveDestroyViewSet(
 class UserCustomViewSet(viewsets.ModelViewSet):
     pagination_class = CustomPagination
     permission_classes = (AllowAny, IsOwnerOrAuthenticated)
-
-    def get_queryset(self):
-        if self.request.user.is_authenticated:
-            queryset = User.objects.annotate(
-                is_subscribed=Exists(Follow.objects.filter(
-                        user=self.request.user,
-                        author=OuterRef('following__author'))
-                )
-            ).annotate(recipes_count=Count('recipes'))
-        else:
-            queryset = User.objects.annotate(
-                is_subscribed=Value(
-                    False, output_field=BooleanField()
-                )
-            )
-        return queryset
+    queryset = User.objects.all()
 
     def get_serializer_class(self):
         if self.action in ['create']:
@@ -55,7 +38,7 @@ class UserCustomViewSet(viewsets.ModelViewSet):
             permission_classes=[IsAuthenticated])
     def me(self, request):
         instance = self.request.user
-        serializer = UserReadSerializer(instance)
+        serializer = UserReadSerializer(instance, context={'request': request})
         return Response(serializer.data)
 
     @action(detail=False, methods=['post'],
@@ -73,16 +56,15 @@ class UserCustomViewSet(viewsets.ModelViewSet):
             permission_classes=[IsAuthenticated],
             url_path='')
     def subscriptions(self, request):
-        followings = self.get_queryset().filter(
-            is_subscribed=True
-        )
+        followings = User.objects.filter(following__user=self.request.user)
         page = self.paginate_queryset(followings)
         if page is not None:
-            serializer = SubscribeSerializer(page, many=True)
+            serializer = SubscribeSerializer(page, context={
+                'request': self.request}, many=True)
             return self.get_paginated_response(serializer.data)
         serializer = SubscribeSerializer(
             followings, many=True, context={
-                'data': request.query_params
+                'request': self.request,
             }
         )
         return Response(serializer.data)
@@ -95,28 +77,33 @@ class UserCustomViewSet(viewsets.ModelViewSet):
     def subscribe(self, request, *args, **kwargs):
         author_id = self.kwargs.get('pk')
         author = get_object_or_404(self.get_queryset(), id=author_id)
-        serializer = SubscribeSerializer(
-            author, context={'data': request.query_params}
-        )
+        is_subscribed = Follow.objects.filter(
+            user=self.request.user,
+            author=author
+        ).exists()
         if request.method == 'GET':
             if request.user == author:
                 error = 'Вы не можете подписаться на самого себя'
             else:
-                if not author.is_subscribed:
+                if not is_subscribed:
                     Follow.objects.create(
                         user=request.user, author=author
                     )
                     author = get_object_or_404(
                         self.get_queryset(), id=author_id
                     )
-                    serializer = SubscribeSerializer(author)
+                    serializer = SubscribeSerializer(
+                        author, context={
+                            'request': self.request,
+                        }
+                    )
                     return Response(
                         serializer.data,
                         status=status.HTTP_201_CREATED
                     )
                 error = 'Вы уже подписаны на этого автора'
         elif request.method == 'DELETE':
-            if author.is_subscribed:
+            if is_subscribed:
                 item = get_object_or_404(
                     Follow, user=request.user, author=author
                 )

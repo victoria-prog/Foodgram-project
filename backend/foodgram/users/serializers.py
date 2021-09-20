@@ -1,4 +1,5 @@
 
+from api.models import Follow
 from api.serializers import ShopFavorSerializer
 from django.contrib.auth.password_validation import validate_password
 from django.core import exceptions as django_exceptions
@@ -42,7 +43,7 @@ class UserCreateSerializer(UserSerializer):
 
 
 class UserReadSerializer(UserSerializer):
-    is_subscribed = serializers.BooleanField(read_only=True)
+    is_subscribed = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -51,11 +52,19 @@ class UserReadSerializer(UserSerializer):
             'last_name', 'is_subscribed'
         ]
 
+    def get_is_subscribed(self, obj):
+        print(self)
+        if self.context['request'].user.is_authenticated:
+            return Follow.objects.filter(
+                user=self.context['request'].user, author=obj
+            ).exists()
+        return False
+
 
 class SubscribeSerializer(UserSerializer):
-    is_subscribed = serializers.BooleanField()
+    is_subscribed = serializers.SerializerMethodField()
     recipes = serializers.SerializerMethodField()
-    recipes_count = serializers.IntegerField()
+    recipes_count = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -65,13 +74,22 @@ class SubscribeSerializer(UserSerializer):
             'recipes_count'
         ]
 
+    def get_is_subscribed(self, obj):
+        return UserReadSerializer.get_is_subscribed(self, obj)
+
+    def get_recipes_count(self, obj):
+        return obj.recipes.all().count()
+
     def get_recipes(self, obj):
         count = 5
         try:
-            count = int(self.context['data']['recipes_limit'])
+            count = int(self.context['request'].query_params['recipes_limit'])
+            print(count)
         except Exception:
             pass
+        print(obj.recipes.all())
         qs = obj.recipes.all()[:count]
+        print(qs)
         serializer = ShopFavorSerializer(qs, many=True)
         return serializer.data
 
