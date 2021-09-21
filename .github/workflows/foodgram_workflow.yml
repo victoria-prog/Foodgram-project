@@ -30,13 +30,13 @@ jobs:
       - name: executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master
         with:
-          context: ./infra
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           stack_file_name: docker-compose.yml
           script: |
             sudo docker pull clapathy/foodgram
+            cd ./infra
             sudo docker-compose stop
             sudo docker-compose rm web
             touch .env 
