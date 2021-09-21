@@ -6,15 +6,15 @@ from .models import (FavoriteRecipes, Follow, Ingredient, Recipe,
 
 class RecipeAdmin(admin.ModelAdmin):
 
-    def amount_of_adding_to_favorite(self, obj):
-        return obj.fav_recipes.count()
-
     list_display = (
         'name', 'author', 'amount_of_adding_to_favorite'
     )
     search_fields = ('name', 'author__username', 'tags__name')
     list_filter = ('pub_date',)
     empty_value_display = '-пусто-'
+
+    def amount_of_adding_to_favorite(self, obj):
+        return obj.fav_recipes.count()
 
 
 class TagAdmin(admin.ModelAdmin):

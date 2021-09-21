@@ -1,12 +1,15 @@
 
-from api.models import Follow
-from api.serializers import ShopFavorSerializer
 from django.contrib.auth.password_validation import validate_password
 from django.core import exceptions as django_exceptions
+from django.http import request
+
 from djoser.conf import settings
 from djoser.serializers import UserSerializer
 from rest_framework import serializers
 from rest_framework.generics import get_object_or_404
+
+from api.models import Follow
+from api.serializers import ShopFavorSerializer
 
 from .models import User
 
@@ -81,11 +84,15 @@ class SubscribeSerializer(UserSerializer):
 
     def get_recipes(self, obj):
         count = 5
-        try:
-            count = int(self.context['request'].query_params['recipes_limit'])
-        except Exception:
-            pass
-        qs = obj.recipes.all()[:count]
+        query = self.context['request'].query_params
+        if (
+            'recipes_limit' in query.keys()
+            and (query['recipes_limit']).isdigit()
+        ):
+            count = int(query['recipes_limit'])
+            qs = obj.recipes.all()[:count]
+        else:
+            qs = obj.recipes.all()
         serializer = ShopFavorSerializer(qs, many=True)
         return serializer.data
 

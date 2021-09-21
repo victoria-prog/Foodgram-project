@@ -1,4 +1,5 @@
 from django.urls import include, path
+
 from rest_framework.routers import SimpleRouter
 
 from . import views
@@ -13,6 +14,6 @@ router.register('ingredients', views.IngredientViewSet, basename='ingredients')
 
 
 urlpatterns = [
-    path('recipes/download_shopping_cart/', views.download),
+    path('recipes/download_shopping_cart/', views.download, name='download'),
     path('', include(router.urls)),
 ]

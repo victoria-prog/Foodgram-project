@@ -1,26 +1,21 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action, api_view, permission_classes
-from rest_framework.mixins import (DestroyModelMixin, ListModelMixin,
-                                   RetrieveModelMixin)
 from rest_framework.permissions import (AllowAny, IsAuthenticated,
                                         IsAuthenticatedOrReadOnly)
 from rest_framework.response import Response
+
 from users.pagination import CustomPagination
 
 from .filters import CustomIngredientFilter, CustomSearchFilter
+from .mixins import ListRetrieveViewSet
 from .models import FavoriteRecipes, Ingredient, Recipe, ShopCartRecipes, Tag
 from .permissions import OwnerOrReadonly
 from .serializers import (IngredientSerializer, RecipeSerializer,
                           ShopFavorSerializer, TagSerializer)
-
-
-class ListRetrieveViewSet(
-    ListModelMixin, viewsets.GenericViewSet, RetrieveModelMixin
-):
-    pass
 
 
 class IngredientViewSet(ListRetrieveViewSet):
@@ -121,18 +116,19 @@ class RecipeViewSet(viewsets.ModelViewSet):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def download(request):
-    qs = ShopCartRecipes.objects.filter(user=request.user)
+    qs = Recipe.objects.filter(shop_cart__user=request.user)
     cart = {}
-    for obj in qs:
-        ingredients = obj.recipe.ingredients.all()
-        for ingredient in ingredients:
-            key = f'{ingredient.name}, {ingredient.measurement_unit}'
-            cart[key] = cart.get(
-                key, 0
-            ) + ingredient.amount
+    ingredients = Ingredient.objects.filter(
+        id__in=qs.values_list('ingredients', flat=True)
+    )
+    for ingredient in ingredients:
+        key = f'{ingredient.name}, {ingredient.measurement_unit}'
+        cart[key] = cart.get(
+            key, 0
+        ) + ingredient.amount
     text_data = ""
-    for k, v in cart.items():
-        string = f'{k} - {v}'.format(k, v)
+    for name, amount in cart.items():
+        string = f'{name} - {amount}'.format(name, amount)
         text_data += string + '\n'
     response = HttpResponse(text_data, content_type='text')
     response['Content-Disposition'] = 'attachment;'

@@ -1,13 +1,12 @@
-
-from api.models import Follow
 from django.shortcuts import get_object_or_404
+
 from rest_framework import status, viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action, api_view
-from rest_framework.mixins import (DestroyModelMixin, ListModelMixin,
-                                   RetrieveModelMixin)
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+
+from api.models import Follow
 
 from .models import User
 from .pagination import CustomPagination
@@ -15,13 +14,6 @@ from .permissions import IsOwnerOrAuthenticated
 from .serializers import (PasswordSerializer, SubscribeSerializer,
                           UserCreateSerializer, UserGetTokenSerializer,
                           UserReadSerializer)
-
-
-class ListRetrieveDestroyViewSet(
-    ListModelMixin, viewsets.GenericViewSet,
-    RetrieveModelMixin, DestroyModelMixin
-):
-    pass
 
 
 class UserCustomViewSet(viewsets.ModelViewSet):
@@ -46,11 +38,10 @@ class UserCustomViewSet(viewsets.ModelViewSet):
     def set_password(self, request):
         user = self.request.user
         serializer = PasswordSerializer(user, data=request.data)
-        if serializer.is_valid():
-            user.set_password(serializer.validated_data['new_password'])
-            user.save()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
+        user.set_password(serializer.validated_data['new_password'])
+        user.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(detail=False, methods=['get'],
             permission_classes=[IsAuthenticated],
