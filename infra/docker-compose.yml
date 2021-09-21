@@ -8,7 +8,9 @@ services:
     env_file:
       - ../backend/foodgram/foodgram/.env
   web:
-    image: clapathy/foodgram
+    build: 
+      context: ../backend/foodgram
+      dockerfile: Dockerfile
     restart: always
     ports:
     - "8000:8000"  
@@ -34,6 +36,5 @@ services:
       - ../docs/redoc.html:/usr/share/nginx/html/api/docs/redoc.html
       - ../docs/openapi-schema.yml:/usr/share/nginx/html/api/docs/openapi-schema.yml
 volumes:
-
   postgres_data:
   media:
