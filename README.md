@@ -24,8 +24,8 @@ docker-compose up
 
 ### Логин и пароль для входа в администраторскую панель
 ```bash
-login: admin@gmail.com
-password: admin
+login:  admin@gmail.com
+password:  dmin
 ```
 
 
