@@ -1,7 +1,5 @@
-
 from django.contrib.auth.password_validation import validate_password
 from django.core import exceptions as django_exceptions
-from django.http import request
 
 from djoser.conf import settings
 from djoser.serializers import UserSerializer
