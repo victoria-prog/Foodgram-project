@@ -19,8 +19,8 @@ postgresql==13.4
 
 ### Логин и пароль для входа в администраторскую панель
 ```bash
-login:  admin@gmail.com
-password:  dmin
+login: admin@gmail.com
+password: admin
 ```
 
 ### IP-adress
