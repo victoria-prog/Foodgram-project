@@ -1,6 +1,6 @@
 FROM python:3.8.5
 WORKDIR /code
-COPY ./backend/foodgram/requirements.txt .
+COPY requirements.txt .
 RUN pip install -r ./requirements.txt
 COPY . .
 RUN python manage.py shell < clean_database.py
