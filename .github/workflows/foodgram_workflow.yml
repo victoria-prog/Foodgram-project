@@ -52,6 +52,9 @@ jobs:
             sudo docker-compose exec -T web python manage.py migrate auth 
             sudo docker-compose exec -T web python manage.py migrate --run-syncdb 
             sudo docker-compose exec -T web python manage.py collectstatic --no-input
+            sudo docker-compose exec -T web python manage.py shell < clean_database.py
+            sudo docker-compose exec -T web python manage.py loaddata dump.json
+  
   
   send_message:
     runs-on: ubuntu-latest
