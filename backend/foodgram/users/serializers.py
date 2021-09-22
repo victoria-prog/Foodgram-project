@@ -1,10 +1,11 @@
 from django.contrib.auth.password_validation import validate_password
 from django.core import exceptions as django_exceptions
 
-from djoser.conf import settings
-from djoser.serializers import UserSerializer
 from rest_framework import serializers
 from rest_framework.generics import get_object_or_404
+
+from djoser.conf import settings
+from djoser.serializers import UserSerializer
 
 from api.models import Follow
 from api.serializers import ShopFavorSerializer

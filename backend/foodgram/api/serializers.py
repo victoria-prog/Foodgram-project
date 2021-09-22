@@ -42,10 +42,6 @@ class UserForReciperializer(serializers.ModelSerializer):
 
 
 class ShopFavorSerializer(serializers.ModelSerializer):
-    image = Base64ImageField(
-        max_length=None, use_url=True
-    )
-
     class Meta:
         fields = ('id', 'name', 'image',  'cooking_time')
         model = Recipe
@@ -60,9 +56,7 @@ class RecipeSerializer(serializers.ModelSerializer):
     author = UserForReciperializer(read_only=True)
     is_favorited = serializers.SerializerMethodField(read_only=True)
     is_in_shopping_cart = serializers.SerializerMethodField(read_only=True)
-    image = Base64ImageField(
-        max_length=None, use_url=True
-    )
+    image = Base64ImageField(max_length=None)
 
     class Meta:
         fields = (
@@ -151,14 +145,12 @@ class RecipeSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 'Вы должны добавить хотя бы один ингредиент')
         for ingredient in data['ingredients']:
-            print(ingredient)
             if ingredient['id'] not in ingredients_ids:
                 raise serializers.ValidationError(
                     'Такого ингредиента не существует'
                 )
-            print(type(ingredient['amount']))
             if ingredient['amount'] <= 0:
                 raise serializers.ValidationError(
-                    'Количество ингредиантов не может быть меньше 1'
+                    'Количество ингредиентов не может быть меньше 1'
                 )
         return data
