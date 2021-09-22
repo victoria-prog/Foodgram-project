@@ -137,11 +137,21 @@ class RecipeSerializer(serializers.ModelSerializer):
         )
 
     def validate(self, data):
-        for ingredient in data['ingredients']:
-            id = ingredient.get('id', None)
-            if id is None or id not in Ingredient.objects.all().values_list(
-                'id', flat=True
-            ):
+        ingredients_ids = Ingredient.objects.all().values_list(
+            'id', flat=True
+        )
+        ingredients_list = [
+            ingredient['id'] for ingredient in data['ingredients']
+        ]
+        if len(ingredients_list) > len(set(ingredients_list)):
+            raise serializers.ValidationError(
+                    'Такой ингредиент уже существует'
+            )
+        if not data['ingredients']:
+            raise serializers.ValidationError(
+                'Вы должны добавить хотя бы один ингредиент')
+        for ingredient in ingredients_list:
+            if ingredient not in ingredients_ids:
                 raise serializers.ValidationError(
                     'Такого ингредиента не существует'
                 )
