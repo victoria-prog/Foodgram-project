@@ -150,9 +150,15 @@ class RecipeSerializer(serializers.ModelSerializer):
         if not data['ingredients']:
             raise serializers.ValidationError(
                 'Вы должны добавить хотя бы один ингредиент')
-        for ingredient in ingredients_list:
-            if ingredient not in ingredients_ids:
+        for ingredient in data['ingredients']:
+            print(ingredient)
+            if ingredient['id'] not in ingredients_ids:
                 raise serializers.ValidationError(
                     'Такого ингредиента не существует'
+                )
+            print(type(ingredient['amount']))
+            if ingredient['amount'] <= 0:
+                raise serializers.ValidationError(
+                    'Количество ингредиантов не может быть меньше 1'
                 )
         return data
