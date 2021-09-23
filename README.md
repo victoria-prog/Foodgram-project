@@ -17,7 +17,7 @@ gunicorn==20.0.4
 postgresql==13.4
 ```
 
-### Логин и пароль для входа в администраторскую панель
+### Логин и пароль для входа
 ```bash
 login: admin@gmail.com
 password: admin
