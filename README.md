@@ -1,13 +1,13 @@
 # foodgram
 
-### Описание
-Проект foodgram собирает рецепты, опубликованные пользователями.
+### Description
+"Foodgram" project collects recipes, published by users.
 
-### Об авторе 
-Виктория Коломиец  
+### About the author
+Viktoria Kolomiets 
 https://github.com/victoria-prog
 
-### Технологии
+### Technologies
 ```
 Python==3.7
 Django==3.0.5
@@ -16,12 +16,3 @@ nginx==1.16
 gunicorn==20.0.4
 postgresql==13.4
 ```
-
-### Логин и пароль для входа
-```bash
-login: admin@gmail.com
-password: admin
-```
-
-### IP-adress
-62.84.112.150
