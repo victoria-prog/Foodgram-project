@@ -14,10 +14,10 @@ const ChangePassword = ({ onPasswordChange }) => {
     <Container>
       <MetaTags>
         <title>Изменить пароль</title>
-        <meta name="description" content="Продуктовый помощник - Изменить пароль" />
-        <meta property="og:title" content="Изменить пароль" />
+        <meta name="description" content="Foodgram - Change the password" />
+        <meta property="og:title" content="Change the password" />
       </MetaTags>
-      <Title title='Изменить пароль' />
+      <Title title='Change the password' />
       <Form
         className={styles.form}
         onSubmit={e => {
@@ -27,21 +27,21 @@ const ChangePassword = ({ onPasswordChange }) => {
       >
         <Input
           required
-          label='Старый пароль'
+          label='Old password'
           type='password'
           name='current_password'
           onChange={handleChange}
         />
         <Input
           required
-          label='Новый пароль'
+          label='New passowrd'
           type='password'
           name='new_password'
           onChange={handleChange}
         />
         <Input
           required
-          label='Подтверждение нового пароля'
+          label='Confirmation of new password'
           type='password'
           name='repeat_password'
           onChange={handleChange}

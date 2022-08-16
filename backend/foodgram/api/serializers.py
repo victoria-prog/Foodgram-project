@@ -139,18 +139,18 @@ class RecipeSerializer(serializers.ModelSerializer):
         ]
         if len(ingredients_list) > len(set(ingredients_list)):
             raise serializers.ValidationError(
-                    'Такой ингредиент уже существует'
+                    'This ingredient exists already'
             )
         if not data['ingredients']:
             raise serializers.ValidationError(
-                'Вы должны добавить хотя бы один ингредиент')
+                'You must add at least one ingredient')
         for ingredient in data['ingredients']:
             if ingredient['id'] not in ingredients_ids:
                 raise serializers.ValidationError(
-                    'Такого ингредиента не существует'
+                    'This ingredient does not exist'
                 )
             if ingredient['amount'] <= 0:
                 raise serializers.ValidationError(
-                    'Количество ингредиентов не может быть меньше 1'
+                    'Quantity of ingredients must not be less than 1'
                 )
         return data

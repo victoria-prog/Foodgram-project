@@ -106,10 +106,10 @@ class UserGetTokenSerializer(serializers.Serializer):
         if email and password:
             user = get_object_or_404(User, email=email)
             if not user:
-                msg = 'Неверные учетные данные'
+                msg = 'Invalid credentials'
                 raise serializers.ValidationError(msg, code='authorization')
         else:
-            msg = 'Поля "почта" и "пароль" обязательны для заполнения'
+            msg = 'Fields "mail" and "passord" are required'
             raise serializers.ValidationError(msg, code='authorization')
         data['user'] = user
         return data

@@ -3,10 +3,18 @@ services:
 
   db:
     image: postgres:12.4
+    ports: 
+      - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
-      - ../backend/foodgram/foodgram/.env
+      - ../backend/foodgram/.env
+    # environment:
+      # - POSTGRES_DB=foodgram
+      # - POSTGRES_USER=foodgram_user
+      # - POSTGRES_PASSWORD=q1q2q3q4
+      # - DB_HOST=db
+      # - DB_PORT=5432
 
   web:
     build: 
@@ -16,7 +24,7 @@ services:
     depends_on:
       - db
     env_file:
-      - ../backend/foodgram/foodgram/.env
+      - ../backend/foodgram/.env
     volumes:
       - media:/code/media
   frontend:

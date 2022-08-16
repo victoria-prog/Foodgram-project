@@ -64,7 +64,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                     serializer.data, status=status.HTTP_201_CREATED
                 )
             return Response(
-                {"errors": "Рецепт уже в корзине"},
+                {"errors": "The recipe is already in the cart"},
                 status=status.HTTP_400_BAD_REQUEST
             )
         elif request.method == 'DELETE':
@@ -75,7 +75,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 item.delete()
                 return Response(status=status.HTTP_204_NO_CONTENT)
             return Response(
-                {"errors": "Рецепта в корзине нет"},
+                {"errors": "The recipe is not in the cart"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -98,7 +98,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                     serializer.data, status=status.HTTP_201_CREATED
                 )
             return Response(
-                {"errors": "Рецепт уже в избранном"},
+                {"errors": "The recipe is already in the favourites"},
                 status=status.HTTP_400_BAD_REQUEST
             )
         elif request.method == 'DELETE':
@@ -109,7 +109,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 item.delete()
                 return Response(status=status.HTTP_204_NO_CONTENT)
             return Response(
-                {"errors": "Рецепта нет в избранном"},
+                {"errors": "The recipe is not in the favourites"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
