@@ -4,7 +4,7 @@ from django.core import exceptions as django_exceptions
 from rest_framework import serializers
 from rest_framework.generics import get_object_or_404
 
-from djoser.conf import settings
+
 from djoser.serializers import UserSerializer
 
 from api.models import Follow
@@ -28,20 +28,24 @@ class UserCreateSerializer(UserSerializer):
         }
 
     def create(self, validated_data):
-        username = self.validated_data['username']
-        email = self.validated_data['email']
-        first_name = self.validated_data['first_name']
-        last_name = self.validated_data['last_name']
-        password = self.validated_data['password']
-        user_obj = User(
-            username=username,
-            email=email,
-            first_name=first_name,
-            last_name=last_name
-        )
-        user_obj.set_password(password)
-        user_obj.save()
-        return user_obj
+        email = validated_data.get('email')
+        username = validated_data.get('username')
+        password = validated_data.get('password')
+        first_name = validated_data.get('first_name')
+        last_name = validated_data.get('last_name')
+        try:
+            user_obj = User(
+                username=username,
+                email=email,
+                first_name=first_name,
+                last_name=last_name
+            )
+            user_obj.set_password(password)
+            user_obj.save()
+            return user_obj
+        except Exception as e:
+            print(e)
+            return e
 
 
 class UserReadSerializer(UserSerializer):
@@ -109,7 +113,7 @@ class UserGetTokenSerializer(serializers.Serializer):
                 msg = 'Invalid credentials'
                 raise serializers.ValidationError(msg, code='authorization')
         else:
-            msg = 'Fields "mail" and "passord" are required'
+            msg = 'Fields "email" and "password" are required'
             raise serializers.ValidationError(msg, code='authorization')
         data['user'] = user
         return data
@@ -119,9 +123,9 @@ class PasswordSerializer(serializers.Serializer):
     new_password = serializers.CharField(style={"input_type": "password"})
     current_password = serializers.CharField(style={"input_type": "password"})
 
-    default_error_messages = {
-        "invalid_password": settings.CONSTANTS.messages.INVALID_PASSWORD_ERROR
-    }
+    # default_error_messages = {
+    #     "invalid_password": settings.CONSTANTS.messages.INVALID_PASSWORD_ERROR
+    # }
 
     def validate(self, data):
         user = self.instance

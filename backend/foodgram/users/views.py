@@ -92,7 +92,7 @@ class UserCustomViewSet(viewsets.ModelViewSet):
                         serializer.data,
                         status=status.HTTP_201_CREATED
                     )
-                error = 'You have already subscribed to this author'
+                error = 'You have already been subscribed to this author'
         elif request.method == 'DELETE':
             if is_subscribed:
                 item = get_object_or_404(
@@ -100,7 +100,7 @@ class UserCustomViewSet(viewsets.ModelViewSet):
                 )
                 item.delete()
                 return Response(status=status.HTTP_204_NO_CONTENT)
-            error = 'You have not subscribe ti this author'
+            error = 'You have been not subscribed to this author'
         return Response(
             {"errors": error},
             status=status.HTTP_400_BAD_REQUEST

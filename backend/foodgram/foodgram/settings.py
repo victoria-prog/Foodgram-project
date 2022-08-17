@@ -36,8 +36,8 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'colorfield',
     'rest_framework',
-    'rest_framework.authtoken',
     'djoser',
+    'rest_framework.authtoken',
     'django_filters',
 ]
 
