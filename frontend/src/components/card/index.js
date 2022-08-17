@@ -4,7 +4,7 @@ import { useState, useContext } from 'react'
 import { AuthContext } from '../../contexts'
 
 const Card = ({
-  name = 'Без названия',
+  name = 'Without a name',
   id,
   image,
   is_favorited,
@@ -31,7 +31,7 @@ const Card = ({
         />
         <TagsContainer tags={tags} />
         <div className={styles.card__time}>
-          <Icons.ClockIcon /> {cooking_time} мин.
+          <Icons.ClockIcon /> {cooking_time} min.
         </div>
         <div className={styles.card__author}>
           <Icons.UserIcon /> <LinkComponent
@@ -51,7 +51,7 @@ const Card = ({
             }}
             disabled={!authContext}
           >
-            {is_in_shopping_cart ? <><Icons.DoneIcon />Рецепт добавлен</> : <><Icons.PlusIcon fill='#4A61DD' /> Добавить в покупки</>}
+            {is_in_shopping_cart ? <><Icons.DoneIcon />The recipe added</> : <><Icons.PlusIcon fill='#4A61DD' /> Add to purchases</>}
           </Button>}
           
           {authContext && <Button

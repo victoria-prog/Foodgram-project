@@ -30,7 +30,7 @@ const Subscription = ({ email, first_name, last_name, username, removeSubscripti
                   {recipe.name}
                 </h3>
                 <p className={styles.subscriptionRecipeText}>
-                  <Icons.ClockIcon />{recipe.cooking_time} мин.
+                  <Icons.ClockIcon />{recipe.cooking_time} min.
                 </p>
               </div>
             } />
@@ -39,7 +39,7 @@ const Subscription = ({ email, first_name, last_name, username, removeSubscripti
         {shouldShowButton && <li className={styles.subscriptionMore}>
           <LinkComponent
             className={styles.subscriptionLink}
-            title={`Еще ${moreRecipes} ${countForm(moreRecipes, ['рецепт', 'рецепта', 'рецептов'])}...`}
+            title={`More ${moreRecipes} ${countForm(moreRecipes, ['recipe', 'recipes'])}...`}
             href={`/user/${id}`}
           />
         </li>}
@@ -52,7 +52,7 @@ const Subscription = ({ email, first_name, last_name, username, removeSubscripti
           removeSubscription({ id })
         }}
       >
-        Отписаться
+        Unfollow
       </Button>
     </div>
   </div>

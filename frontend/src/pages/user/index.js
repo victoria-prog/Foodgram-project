@@ -78,9 +78,9 @@ const UserPage = ({ updateOrders }) => {
   return <Main>
     <Container className={styles.container}>
       <MetaTags>
-        <title>{user ? `${user.first_name} ${user.last_name}` : 'User"s page'}</title>
-        <meta name="description" content={user ? `Foodgram - ${user.first_name} ${user.last_name}` : 'Foodgram - User"s country'} />
-        <meta property="og:title" content={user ? `${user.first_name} ${user.last_name}` : 'User"s page'} />
+        <title>{user ? `${user.first_name} ${user.last_name}` : 'User page'}</title>
+        <meta name="description" content={user ? `Foodgram - ${user.first_name} ${user.last_name}` : 'Foodgram - User country'} />
+        <meta property="og:title" content={user ? `${user.first_name} ${user.last_name}` : 'User page'} />
       </MetaTags>
       <div className={styles.title}>
         <Title

@@ -101,7 +101,7 @@ const RecipeCreate = ({ onEdit }) => {
         }}
       >
         <Input
-          label='Название рецепта'
+          label='Name of the recipe'
           onChange={e => {
             const value = e.target.value
             setRecipeName(value)

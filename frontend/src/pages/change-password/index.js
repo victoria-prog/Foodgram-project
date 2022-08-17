@@ -13,7 +13,7 @@ const ChangePassword = ({ onPasswordChange }) => {
   return <Main>
     <Container>
       <MetaTags>
-        <title>Изменить пароль</title>
+        <title>Change the password</title>
         <meta name="description" content="Foodgram - Change the password" />
         <meta property="og:title" content="Change the password" />
       </MetaTags>
@@ -51,7 +51,7 @@ const ChangePassword = ({ onPasswordChange }) => {
           type='submit'
           disabled={!isValid || values.new_password !== values.repeat_password}
         >
-          Изменить пароль
+          Change the passowrd
         </Button>
       </Form>
     </Container>

@@ -32,12 +32,12 @@ const SubscriptionsPage = () => {
   return <Main>
     <Container>
       <MetaTags>
-        <title>My followings</title>
-        <meta name="description" content="Foodgram - My followings" />
-        <meta property="og:title" content="My followings" />
+        <title>My subscriptions</title>
+        <meta name="description" content="Foodgram - My subscriptions" />
+        <meta property="og:title" content="My subscriptions" />
       </MetaTags>
       <Title
-        title='My followings'
+        title='My subscriptions'
       />
       <SubscriptionList
         subscriptions={subscriptions}
