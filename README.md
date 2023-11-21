@@ -1,4 +1,4 @@
-# foodgram
+# Foodgram
 
 ### Description
 "Foodgram" project collects recipes, published by users.
@@ -19,9 +19,8 @@ PostgreSQL
 ```
 
 ###
-My part of the work was writing the backend.
-There are issues related to displaying errors on the frontend side.
+An online service which collects recipes published by users. I developed the server-side logic for this application, connected it to the front-end
+through an API, and deployed it to a remote server. Technologies: Python, Django, PostgreSQL, Google Cloud, Nginx, Docker.
 
 
-###
-Click [here](http://foodgram.servepics.com/recipes) to go to my site!
+
