@@ -9,13 +9,6 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - ../backend/foodgram/.env
-    # environment:
-      # - POSTGRES_DB=foodgram
-      # - POSTGRES_USER=foodgram_user
-      # - POSTGRES_PASSWORD=q1q2q3q4
-      # - DB_HOST=db
-      # - DB_PORT=5432
-
   web:
     build: 
       context: ../backend/foodgram
